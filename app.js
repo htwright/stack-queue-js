@@ -33,7 +33,7 @@ function peek(stack){
   return stack.top.data;
 }
 
-function display(stack){
+function displayStack(stack){
   let node = stack.top;
   let str = '';
   while(node !== null){
@@ -43,34 +43,180 @@ function display(stack){
   return str;
 }
 
+
 function palendrome(string){
   let stack1 = new Stack();
   for(let i = 0; i < string.length; i++){
     stack1.push(string[i]);
   }
-  let original = display(stack1);;
- 
-  
-  let stack2 = new Stack();
   let node = stack1.top;
+  let counter = 0;
   while(node !== null){
-    stack2.push(node.data);
-    node = node.next;
-  }
-  let reversed = display(stack2);
-  for(let i = 0; i < string.length; i++){
-    if(original[i] !== reversed[i]){
+    let popped = stack1.pop();
+    if (popped !== string[counter]){
       return false;
     }
+    node = stack1.top;
+    counter++;
   }
   return true;
 }
+
+function parenMatch (string) {
+  let stack1 = new Stack();
+  let brackets = 0; // []
+  let parens = 0; // ()
+  let braces = 0; // {}
+  for(let i = 0; i < string.length; i++){
+    stack1.push(string[i]);
+  }
+  let node = stack1.top;
+  while(node !== null){
+    let popped = stack1.pop();
+    switch(popped){
+    case '[':
+      brackets++;
+      break;
+    case ']':
+      brackets--;
+      break;
+    case '(':
+      parens++;
+      break;
+    case ')':
+      parens--;
+      break;
+    case '{':
+      braces++;
+      break;
+    case '}':
+      braces--;
+      break;
+    }
+    node = stack1.top;
+  }
+  if(braces === 0 && brackets === 0 && parens === 0){
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
+
+
 
 let s = new Stack();
 
 s.push(1);
 s.push(2);
 s.push(3);
-display(s);
+palendrome('racecar');
+
+console.log(parenMatch('(((()))){{{{{{{}}}{}}}}}[[[[[[[]]]]]]]'));
 
 
+//--------------------------------Queue----------------------------
+
+class Queue{
+  constructor(){
+    this.head = null;
+    this.tail = null;
+  }
+  createNode(data = null, next = null, prev = null){
+    return {
+      data,
+      next,
+      prev
+    };
+  }
+
+  enqueue(data){
+    let newNode = this.createNode(data);
+    if(this.tail){
+      newNode.prev = this.tail;
+      this.tail.next = newNode;
+    }
+
+    this.tail = newNode;
+
+    if(this.head === null){
+      this.head = newNode;
+    }
+  }
+
+  dequeue() {
+    
+    if(this.head === null){
+      return;
+    }
+
+    let head = this.head;
+    
+    if(head === this.tail){
+      this.tail = null;
+    }
+
+    this.head = head.prev;
+    
+    return head.data;
+  }
+}
+
+function displayQueue(q) {
+  let node = q.head;
+  while(node !== null){
+    console.log(node.data);
+    node = node.next;
+  }
+}
+
+function squareDance(men, women){
+  let menQ = new Queue();
+  let womenQ = new Queue();
+  for(let i = 0; i < men.length; i++){
+    menQ.enqueue(men[i]);
+  }
+  for(let i = 0; i < women.length; i++){
+    womenQ.enqueue(women[i]);
+  }
+  console.log(menQ);
+  let menN = menQ.head;
+  let womenN = womenQ.head;
+  while((menN !== null) && (womenN !== null)){
+    console.log('female ' + womenN.data + ' and male ' + menN.data);
+    womenQ.dequeue();
+    menQ.dequeue();
+    menN = menQ.head;
+    womenN = womenQ.head;
+  }
+  if(menN !== null){
+    let str = '';
+    while(menN !== null){
+      str += menN.data + ' ';
+      menQ.dequeue();
+      menN = menQ.head;
+    }
+    return 'men ' + str + ' waiting to dance!';
+  }
+  if(womenN !== null){
+    let str = '';
+    while(womenN !== null){
+      str += womenN.data + ' ';
+      womenQ.dequeue();
+      womenN = womenQ.head;
+    }
+    return 'women ' + str + ' waiting to dance!';
+  }
+
+}
+
+squareDance(['bobby', 'joe', 'louis', 'daniel'], ['alice', 'stephanie', 'gertrude', 'phyllis']);
+
+
+let q1 = new Queue();
+
+q1.enqueue('Harrison');
+q1.enqueue('ya dog');
+q1.enqueue('boii');
+displayQueue(q1);
