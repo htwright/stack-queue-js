@@ -152,7 +152,7 @@ class Queue{
     }
 
     let head = this.head;
-    this.head = head.prev;
+    this.head = head.next;
 
     
     if(head === this.tail){
@@ -187,15 +187,15 @@ function squareDance(men, women){
     console.log('female ' + womenN.data + ' and male ' + menN.data);
     womenQ.dequeue();
     menQ.dequeue();
-    menN = menN.next;
-    womenN = womenN.next;
+    menN = menQ.head;
+    womenN = womenQ.head;
   }
   if(menN !== null){
     let str = '';
     while(menN !== null){
       str += menN.data + ' ';
       menQ.dequeue();
-      menN = menN.next;
+      menN = menQ.head;
     }
     return 'men ' + str + ' waiting to dance!';
   }
@@ -204,7 +204,7 @@ function squareDance(men, women){
     while(womenN !== null){
       str += womenN.data + ' ';
       womenQ.dequeue();
-      womenN = womenN.next;
+      womenN = womenQ.head;
     }
     return 'women ' + str + ' waiting to dance!';
   }
