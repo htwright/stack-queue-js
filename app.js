@@ -92,6 +92,8 @@ function parenMatch (string) {
     case '}':
       braces--;
       break;
+    default:
+      break;
     }
     node = stack1.top;
   }
@@ -208,9 +210,30 @@ function squareDance(men, women){
     }
     return 'women ' + str + ' waiting to dance!';
   }
-
+  return 'all even!';
 }
 
 console.log(squareDance(['bobby', 'joe', 'louis', 'jack'], ['alice', 'stephanie']));
 console.log(squareDance(['daniel', 'royce'], ['gertrude', 'phyllis', 'cindy', 'kathy']));
 
+function OphidianBank(num){
+  let bank = new Queue();
+  for (let i = 1; i <= num; i++){
+    bank.enqueue(`Customer #${i}`);
+  }
+  let counter = 0;
+  let firstInLine = bank.head;
+  while(firstInLine !== null){
+    console.log(firstInLine.data);    
+    let current = bank.dequeue();
+    counter ++;
+    if((Math.random()*10) > 7.5){
+      firstInLine = bank.head;
+      bank.enqueue(current);
+    } else {
+      firstInLine = bank.head;
+    }
+  }
+  return counter;
+}
+console.log(OphidianBank(20));
