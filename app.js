@@ -152,12 +152,13 @@ class Queue{
     }
 
     let head = this.head;
+    this.head = head.prev;
+
     
     if(head === this.tail){
       this.tail = null;
     }
 
-    this.head = head.prev;
     
     return head.data;
   }
@@ -180,22 +181,21 @@ function squareDance(men, women){
   for(let i = 0; i < women.length; i++){
     womenQ.enqueue(women[i]);
   }
-  console.log(menQ);
   let menN = menQ.head;
   let womenN = womenQ.head;
   while((menN !== null) && (womenN !== null)){
     console.log('female ' + womenN.data + ' and male ' + menN.data);
     womenQ.dequeue();
     menQ.dequeue();
-    menN = menQ.head;
-    womenN = womenQ.head;
+    menN = menN.next;
+    womenN = womenN.next;
   }
   if(menN !== null){
     let str = '';
     while(menN !== null){
       str += menN.data + ' ';
       menQ.dequeue();
-      menN = menQ.head;
+      menN = menN.next;
     }
     return 'men ' + str + ' waiting to dance!';
   }
@@ -204,19 +204,13 @@ function squareDance(men, women){
     while(womenN !== null){
       str += womenN.data + ' ';
       womenQ.dequeue();
-      womenN = womenQ.head;
+      womenN = womenN.next;
     }
     return 'women ' + str + ' waiting to dance!';
   }
 
 }
 
-squareDance(['bobby', 'joe', 'louis', 'daniel'], ['alice', 'stephanie', 'gertrude', 'phyllis']);
+console.log(squareDance(['bobby', 'joe', 'louis', 'jack'], ['alice', 'stephanie']));
+console.log(squareDance(['daniel', 'royce'], ['gertrude', 'phyllis', 'cindy', 'kathy']));
 
-
-let q1 = new Queue();
-
-q1.enqueue('Harrison');
-q1.enqueue('ya dog');
-q1.enqueue('boii');
-displayQueue(q1);
